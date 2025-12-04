@@ -3,8 +3,9 @@ import bridge, { UserInfo } from '@vkontakte/vk-bridge';
 import { View, SplitLayout, SplitCol, ScreenSpinner } from '@vkontakte/vkui';
 import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 
-import { Persik, Home } from './panels';
+import { Persik, Home, Auth } from './panels';
 import { DEFAULT_VIEW_PANELS } from './routes';
+import { AuthProvider } from './contexts/AuthContext';
 
 export const App = () => {
   const { panel: activePanel = DEFAULT_VIEW_PANELS.HOME } = useActiveVkuiLocation();
@@ -21,14 +22,17 @@ export const App = () => {
   }, []);
 
   return (
-    <SplitLayout>
-      <SplitCol>
-        <View activePanel={activePanel}>
-          <Home id="home" fetchedUser={fetchedUser} />
-          <Persik id="persik" />
-        </View>
-      </SplitCol>
-      {popout}
-    </SplitLayout>
+    <AuthProvider>
+      <SplitLayout>
+        <SplitCol>
+          <View activePanel={activePanel}>
+            <Home id="home" fetchedUser={fetchedUser} />
+            <Persik id="persik" />
+            <Auth id="auth" />
+          </View>
+        </SplitCol>
+        {popout}
+      </SplitLayout>
+    </AuthProvider>
   );
 };
