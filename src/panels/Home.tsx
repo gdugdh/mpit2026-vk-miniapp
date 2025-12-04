@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC } from "react";
 import {
   Panel,
   PanelHeader,
@@ -9,9 +9,9 @@ import {
   Div,
   Avatar,
   NavIdProps,
-} from '@vkontakte/vkui';
-import { UserInfo } from '@vkontakte/vk-bridge';
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+} from "@vkontakte/vkui";
+import { UserInfo } from "@vkontakte/vk-bridge";
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 
 export interface HomeProps extends NavIdProps {
   fetchedUser?: UserInfo;
@@ -25,8 +25,13 @@ export const Home: FC<HomeProps> = ({ id, fetchedUser }) => {
     <Panel id={id}>
       <PanelHeader>Главная</PanelHeader>
       {fetchedUser && (
-        <Group header={<Header size="s">User Data Fetched with VK Bridge</Header>}>
-          <Cell before={photo_200 && <Avatar src={photo_200} />} subtitle={city?.title}>
+        <Group
+          header={<Header size="s">User Data Fetched with VK Bridge</Header>}
+        >
+          <Cell
+            before={photo_200 && <Avatar src={photo_200} />}
+            subtitle={city?.title}
+          >
             {`${first_name} ${last_name}`}
           </Cell>
         </Group>
@@ -34,8 +39,13 @@ export const Home: FC<HomeProps> = ({ id, fetchedUser }) => {
 
       <Group header={<Header size="s">Navigation Example</Header>}>
         <Div>
-          <Button stretched size="l" mode="secondary" onClick={() => routeNavigator.push('persik')}>
-            Покажите Персика, пожалуйста!
+          <Button
+            stretched
+            size="l"
+            mode="secondary"
+            onClick={() => routeNavigator.push("persik")}
+          >
+            Показать котэ
           </Button>
         </Div>
       </Group>
