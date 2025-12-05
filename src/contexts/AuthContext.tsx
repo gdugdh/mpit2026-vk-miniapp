@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import bridge from '@vkontakte/vk-bridge';
 import { authAPI, profileAPI, User, Profile, VKParams } from '../services/api';
 
 interface AuthContextType {
