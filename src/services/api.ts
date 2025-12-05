@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_BASE_URL = 'https://lena.linkpc.net/api/v1';
+const API_BASE_URL = "https://urban-match.run.place/api/v1";
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem("auth_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -67,30 +67,30 @@ export interface VKParams {
 
 export const authAPI = {
   authenticateVK: async (vkParams: VKParams): Promise<AuthResponse> => {
-    const response = await apiClient.post('/auth/vk', {
+    const response = await apiClient.post("/auth/vk", {
       vk_params: vkParams,
     });
     return response.data;
   },
 
   logout: async (): Promise<void> => {
-    await apiClient.post('/auth/logout');
+    await apiClient.post("/auth/logout");
   },
 
   getMe: async (): Promise<{ user_id: number }> => {
-    const response = await apiClient.get('/auth/me');
+    const response = await apiClient.get("/auth/me");
     return response.data;
   },
 };
 
 export const profileAPI = {
   getMyProfile: async (): Promise<Profile> => {
-    const response = await apiClient.get('/profile/me');
+    const response = await apiClient.get("/profile/me");
     return response.data;
   },
 
   updateProfile: async (data: Partial<Profile>): Promise<Profile> => {
-    const response = await apiClient.put('/profile/me', data);
+    const response = await apiClient.put("/profile/me", data);
     return response.data;
   },
 
@@ -103,7 +103,7 @@ export const profileAPI = {
     pref_max_age?: number;
     pref_max_distance_km?: number;
   }): Promise<Profile> => {
-    const response = await apiClient.post('/profile/complete-onboarding', data);
+    const response = await apiClient.post("/profile/complete-onboarding", data);
     return response.data;
   },
 };
