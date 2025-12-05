@@ -66,9 +66,10 @@ export interface VKParams {
 }
 
 export const authAPI = {
-  authenticateVK: async (vkParams: VKParams): Promise<AuthResponse> => {
+  authenticateVK: async (vkParams: VKParams, accessToken: string): Promise<AuthResponse> => {
     const response = await apiClient.post("/auth/vk", {
       vk_params: vkParams,
+      access_token: accessToken,
     });
     return response.data;
   },

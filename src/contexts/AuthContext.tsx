@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import bridge from '@vkontakte/vk-bridge';
 import { authAPI, profileAPI, User, Profile, VKParams } from '../services/api';
 
 interface AuthContextType {
@@ -72,7 +73,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.log('VK Params:', vkParams);
       console.log('Full URL:', window.location.href);
 
-      const authResponse = await authAPI.authenticateVK(vkParams as VKParams);
+      // Request access token from VK Bridge
+      let accessToken = '';
+      try {
+        const tokenData = await bridge.send('VKWebAppGetAuthToken', {
+          app_id: Number(vkParams.vk_app_id) || 52962862, // Use app_id from params or fallback
+          scope: 'friends,photos,status', // Request needed permissions
+        });
+        accessToken = tokenData.access_token;
+        console.log('Access token received');
+      } catch (err) {
+        console.error('Failed to get access token:', err);
+        throw new Error('Failed to get VK access token. Please grant permissions.');
+      }
+
+      const authResponse = await authAPI.authenticateVK(vkParams as VKParams, accessToken);
 
       localStorage.setItem('auth_token', authResponse.token);
       localStorage.setItem('user', JSON.stringify(authResponse.user));
@@ -83,7 +98,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       await fetchProfile();
     } catch (err: any) {
       console.error('Authentication failed:', err);
-      setError(err.response?.data?.error || 'Authentication failed');
+      setError(err.response?.data?.error || err.message || 'Authentication failed');
       setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
