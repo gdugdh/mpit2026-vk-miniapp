@@ -61,7 +61,7 @@ export function VKUserProfile({ accessToken, userId }: VKUserProfileProps) {
     return (
       <Group>
         <Placeholder>
-          <Spinner size="large" />
+          <Spinner size="l" />
         </Placeholder>
       </Group>
     );
@@ -84,7 +84,7 @@ export function VKUserProfile({ accessToken, userId }: VKUserProfileProps) {
   }
 
   return (
-    <Group header={<Header mode="secondary">Данные из VK</Header>}>
+    <Group header={<Header>Данные из VK</Header>}>
       <SimpleCell
         before={<Avatar size={48} src={userInfo.photo_200} />}
         subtitle={userInfo.city?.title || 'Город не указан'}
