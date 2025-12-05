@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://urban-match.run.place/api/v1";
+const API_BASE_URL = "https://urban-match.work.gd/api/v1";
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -66,7 +66,10 @@ export interface VKParams {
 }
 
 export const authAPI = {
-  authenticateVK: async (vkParams: VKParams, accessToken: string): Promise<AuthResponse> => {
+  authenticateVK: async (
+    vkParams: VKParams,
+    accessToken: string,
+  ): Promise<AuthResponse> => {
     const response = await apiClient.post("/auth/vk", {
       vk_params: vkParams,
       access_token: accessToken,
