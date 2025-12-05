@@ -60,7 +60,9 @@ export interface VKParams {
   vk_language?: string;
   vk_platform?: string;
   vk_access_token_settings?: string;
+  vk_ts?: string;
   sign: string;
+  [key: string]: string | undefined;
 }
 
 export const authAPI = {

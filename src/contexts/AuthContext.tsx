@@ -52,20 +52,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setIsLoading(true);
       setError(null);
 
-      const launchParams = await bridge.send('VKWebAppGetLaunchParams');
+      // Get VK launch params from URL query string or hash
+      let searchParams = new URLSearchParams(window.location.search);
 
-      const vkParams: VKParams = {
-        vk_user_id: launchParams.vk_user_id?.toString() || '',
-        vk_app_id: launchParams.vk_app_id?.toString() || '',
-        vk_is_app_user: launchParams.vk_is_app_user?.toString(),
-        vk_are_notifications_enabled: launchParams.vk_are_notifications_enabled?.toString(),
-        vk_language: launchParams.vk_language,
-        vk_platform: launchParams.vk_platform,
-        vk_access_token_settings: launchParams.vk_access_token_settings,
-        sign: launchParams.sign || '',
-      };
+      // If no params in search, try hash
+      if (!searchParams.has('vk_user_id')) {
+        const hash = window.location.hash.substring(1);
+        searchParams = new URLSearchParams(hash);
+      }
 
-      const authResponse = await authAPI.authenticateVK(vkParams);
+      const vkParams: Record<string, string> = {};
+
+      // Collect all VK params and sign
+      searchParams.forEach((value, key) => {
+        if (key.startsWith('vk_') || key === 'sign') {
+          vkParams[key] = value;
+        }
+      });
+
+      console.log('VK Params:', vkParams);
+      console.log('Full URL:', window.location.href);
+
+      const authResponse = await authAPI.authenticateVK(vkParams as VKParams);
 
       localStorage.setItem('auth_token', authResponse.token);
       localStorage.setItem('user', JSON.stringify(authResponse.user));
